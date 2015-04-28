@@ -1,11 +1,11 @@
-;;; osx-essential.el --- Basic function for Apple/OSX. This functions for running apple script, notification, vpn etc.
+;;; osx-lib.el --- Basic function for Apple/OSX.
 ;;
-;; Copyright (C) 2015 OSX Essentials authors
+;; Copyright (C) 2015 OSX Lib authors
 ;;
-;; Author: Raghav Kumar Gautam <raghav@apach.org>
+;; Author: Raghav Kumar Gautam <raghav@apache.org>
 ;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN
 ;;; Commentary:
-;; Provides osx functions for:
+;; Provides functions for:
 ;;   1. Running Apple Script / osascript
 ;;   2. Notification functions
 ;;   3. Copying to/from clipboard
@@ -16,35 +16,35 @@
 ;;running apple script
 
 (require 'dired)
-(defun osx-run-osascript (script-content)
+(defun osx-lib-run-osascript (script-content)
   "Run an SCRIPT-CONTENT as AppleScript/osascipt."
   (interactive "sContent of AppleScript/osascript:")
   (start-process "OsaScript" "*OsaScript*" "osascript" "-e" script-content))
 
-(defalias 'osx-run-applescript 'osx-run-osascript)
+(defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
 ;;notification fuctions
-(defun osx-notify2 (title message)
+(defun osx-lib-notify2 (title message)
   "Create a notification with title as TITLE and message as MESSAGE."
-  (osx-run-osascript
+  (osx-lib-run-osascript
    (concat "display notification \"" message "\" with title  \"" title "\"")))
 
-(defun osx-notify3 (title subtitle message)
+(defun osx-lib-notify3 (title subtitle message)
   "Create a notification with title as TITLE, subtitle as SUBTITLE and message as MESSAGE."
-  (osx-run-osascript
+  (osx-lib-run-osascript
    (concat "display notification \"" message "\" with title  \"" title "\"" " subtitle \"" subtitle "\"")))
 
 ;;clipboard functions
-(defun osx-copy-to-clipboard (text)
+(defun osx-lib-copy-to-clipboard (text)
   "Copy the given TEXT to clipboard."
   (shell-command-to-string (concat "pbcopy < <(echo -n " (shell-quote-argument text) ")")))
 
-(defun osx-copy-from-clipboard ()
+(defun osx-lib-copy-from-clipboard ()
   "Get clipboard text."
   (shell-command-to-string "pbpaste"))
 
 ;;function to show file in finder
-(defun osx-reveal-in-finder-as (file)
+(defun osx-lib-reveal-in-finder-as (file)
   "Reveal the supplied file FILE in Finder.
 This function runs the actual AppleScript."
   (let* ((script (concat
@@ -53,24 +53,24 @@ This function runs the actual AppleScript."
 		  " set frontmost to true\n"
 		  " reveal thePath \n"
 		  "end tell\n")))
-    (osx-run-osascript script)))
+    (osx-lib-run-osascript script)))
 
-(defun osx-reveal-in-finder ()
+(defun osx-lib-reveal-in-finder ()
   "Reveal the file associated with the current buffer in the OS X Finder.
 In a dired buffer, it will open the current file."
   (interactive)
-  (osx-reveal-in-finder-as
+  (osx-lib-reveal-in-finder-as
    (or (buffer-file-name)
        (expand-file-name (dired-file-name-at-point)))))
 
-(defalias 'osx-find-file-in-finder 'osx-reveal-in-finder)
+(defalias 'osx-lib-find-file-in-finder 'osx-lib-reveal-in-finder)
 
 ;;vpn connect/disconnect functions
-(defun osx-vpn-connect (vpn-name password)
+(defun osx-lib-vpn-connect (vpn-name password)
   "Connect to vpn using given VPN-NAME and PASSWORD."
   (interactive "MPlease enter vpn-name:\nMPlease enter vpn password:")
-  (let ((old-content (osx-copy-from-clipboard)))
-    (osx-run-osascript
+  (let ((old-content (osx-lib-copy-from-clipboard)))
+    (osx-lib-run-osascript
      (format
       "tell application \"System Events\"
         tell current location of network preferences
@@ -81,16 +81,16 @@ In a dired buffer, it will open the current file."
                 end repeat
         end tell
 end tell" vpn-name))
-    (osx-copy-to-clipboard password)
-    (osx-notify2 "Please paste" "Password has been copied to clipboard")
+    (osx-lib-copy-to-clipboard password)
+    (osx-lib-notify2 "Please paste" "Password has been copied to clipboard")
     (sit-for 5)
-    (osx-copy-to-clipboard old-content)
-    (osx-notify2 "Clipboard restored" "")))
+    (osx-lib-copy-to-clipboard old-content)
+    (osx-lib-notify2 "Clipboard restored" "")))
 
-(defun osx-vpn-disconnect (vpn-name)
+(defun osx-lib-vpn-disconnect (vpn-name)
   "Disconnect from VPN-NAME vpn."
   (interactive "MEnter the vpn that you want to connect to:")
-  (osx-run-osascript
+  (osx-lib-run-osascript
    (format
 "tell application \"System Events\"
         tell current location of network preferences
@@ -101,7 +101,7 @@ end tell" vpn-name))
                 end repeat
         end tell
 end tell" vpn-name))
-  (osx-notify2 "VPN Disconnected" ""))
+  (osx-lib-notify2 "VPN Disconnected" ""))
 
-(provide 'osx-essential)
-;;; osx-essential ends here
+(provide 'osx-lib)
+;;; osx-lib ends here
