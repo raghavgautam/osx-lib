@@ -61,7 +61,7 @@ In a dired buffer, it will open the current file."
   (interactive)
   (osx-lib-reveal-in-finder-as
    (or (buffer-file-name)
-       (expand-file-name (dired-file-name-at-point)))))
+       (expand-file-name (or (dired-file-name-at-point) ".")))))
 
 (defalias 'osx-lib-find-file-in-finder 'osx-lib-reveal-in-finder)
 
