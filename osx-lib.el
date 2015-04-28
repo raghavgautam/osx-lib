@@ -16,6 +16,8 @@
 ;;running apple script
 
 (require 'dired)
+
+;;;###autoload
 (defun osx-lib-run-osascript (script-content)
   "Run an SCRIPT-CONTENT as AppleScript/osascipt."
   (interactive "sContent of AppleScript/osascript:")
@@ -24,17 +26,30 @@
 (defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
 ;;notification fuctions
+;;;###autoload
 (defun osx-lib-notify2 (title message)
   "Create a notification with title as TITLE and message as MESSAGE."
   (osx-lib-run-osascript
-   (concat "display notification \"" message "\" with title  \"" title "\"")))
+   (concat "display notification \""
+	   (shell-quote-argument message)
+	   "\" with title  \""
+	   (shell-quote-argument title)
+	   "\"")))
 
+;;;###autoload
 (defun osx-lib-notify3 (title subtitle message)
   "Create a notification with title as TITLE, subtitle as SUBTITLE and message as MESSAGE."
   (osx-lib-run-osascript
-   (concat "display notification \"" message "\" with title  \"" title "\"" " subtitle \"" subtitle "\"")))
+   (concat "display notification \""
+	   (shell-quote-argument message)
+	   "\" with title  \""
+	   (shell-quote-argument title)
+	   "\" subtitle \""
+	   (shell-quote-argument subtitle)
+	   "\"")))
 
 ;;clipboard functions
+;;;###autoload
 (defun osx-lib-copy-to-clipboard (text)
   "Copy the given TEXT to clipboard."
   (shell-command-to-string (concat "pbcopy < <(echo -n " (shell-quote-argument text) ")")))
@@ -44,17 +59,19 @@
   (shell-command-to-string "pbpaste"))
 
 ;;function to show file in finder
+;;;###autoload
 (defun osx-lib-reveal-in-finder-as (file)
   "Reveal the supplied file FILE in Finder.
 This function runs the actual AppleScript."
-  (let* ((script (concat
-		  "set thePath to POSIX file \"" file "\"\n"
-		  "tell application \"Finder\"\n"
-		  " set frontmost to true\n"
-		  " reveal thePath \n"
-		  "end tell\n")))
+  (let ((script (concat
+		 "set thePath to POSIX file \"" (shell-quote-argument file) "\"\n"
+		 "tell application \"Finder\"\n"
+		 " set frontmost to true\n"
+		 " reveal thePath \n"
+		 "end tell\n")))
     (osx-lib-run-osascript script)))
 
+;;;###autoload
 (defun osx-lib-reveal-in-finder ()
   "Reveal the file associated with the current buffer in the OS X Finder.
 In a dired buffer, it will open the current file."
@@ -66,6 +83,7 @@ In a dired buffer, it will open the current file."
 (defalias 'osx-lib-find-file-in-finder 'osx-lib-reveal-in-finder)
 
 ;;vpn connect/disconnect functions
+;;;###autoload
 (defun osx-lib-vpn-connect (vpn-name password)
   "Connect to vpn using given VPN-NAME and PASSWORD."
   (interactive "MPlease enter vpn-name:\nMPlease enter vpn password:")
@@ -87,6 +105,7 @@ end tell" vpn-name))
     (osx-lib-copy-to-clipboard old-content)
     (osx-lib-notify2 "Clipboard restored" "")))
 
+;;;###autoload
 (defun osx-lib-vpn-disconnect (vpn-name)
   "Disconnect from VPN-NAME vpn."
   (interactive "MEnter the vpn that you want to connect to:")
