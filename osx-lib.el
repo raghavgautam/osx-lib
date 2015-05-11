@@ -21,7 +21,11 @@
 (defun osx-lib-run-osascript (script-content)
   "Run an SCRIPT-CONTENT as AppleScript/osascipt."
   (interactive "sContent of AppleScript/osascript:")
-  (start-process "OsaScript" "*OsaScript*" "osascript" "-e" script-content))
+  (let  ((file (make-temp-file "osx-lib-" nil ".scpt")))
+    (with-temp-buffer
+      (insert script-content)
+      (write-file file)
+      (start-process "OsaScript" "*OsaScript*" "osascript" file))))
 
 (defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
@@ -31,9 +35,9 @@
   "Create a notification with title as TITLE and message as MESSAGE."
   (osx-lib-run-osascript
    (concat "display notification \""
-	   (shell-quote-argument message)
+	   message
 	   "\" with title  \""
-	   (shell-quote-argument title)
+	   title
 	   "\"")))
 
 ;;;###autoload
@@ -41,11 +45,11 @@
   "Create a notification with title as TITLE, subtitle as SUBTITLE and message as MESSAGE."
   (osx-lib-run-osascript
    (concat "display notification \""
-	   (shell-quote-argument message)
+	   message
 	   "\" with title  \""
-	   (shell-quote-argument title)
+	   title
 	   "\" subtitle \""
-	   (shell-quote-argument subtitle)
+	   subtitle
 	   "\"")))
 
 ;;clipboard functions
