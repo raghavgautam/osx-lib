@@ -30,6 +30,11 @@
 
 (defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
+;;;###autoload
+(defun osx-lib-do-beep ()
+  "Play beep sound."
+  (osx-lib-run-applescript "beep"))
+
 ;;notification fuctions
 ;;;###autoload
 (defun osx-lib-notify2 (title message)
