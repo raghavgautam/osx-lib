@@ -22,10 +22,11 @@
   "Run an SCRIPT-CONTENT as AppleScript/osascipt."
   (interactive "sContent of AppleScript/osascript:")
   (let  ((file (make-temp-file "osx-lib-" nil ".scpt")))
-    (with-temp-buffer
+    (with-temp-file file
       (insert script-content)
-      (write-file file)
-      (start-process "OsaScript" "*OsaScript*" "osascript" file))))
+      ;;delete the script after execution
+      (insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)"))
+    (start-process "OsaScript" "*OsaScript*" "osascript" file)))
 
 (defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
