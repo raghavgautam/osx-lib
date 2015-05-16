@@ -7,10 +7,16 @@
 ;;; Commentary:
 ;; Provides functions for:
 ;;   1. Running Apple Script / osascript
-;;   2. Notification functions
-;;   3. Copying to/from clipboard
-;;   4. Show the current file in Finder. Works with dired.
-;;   5. VPN Connect/Disconnect
+;;   2. Play beep
+;;      (setq ring-bell-function #'osx-lib-do-beep)
+;;   3. Notification functions
+;;   4. Copying to/from clipboard
+;;   5. Show the current file in Finder. Works with dired.
+;;   6. VPN Connect/Disconnect
+;;      (defun work-vpn-connect ()
+;;        "Connect to Work VPN."
+;;        (interactive)
+;;        (osx-lib-vpn-connect "WorkVPN" "VPN_Password"))
 ;;
 ;;; Code:
 ;;running apple script
