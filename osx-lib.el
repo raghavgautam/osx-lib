@@ -22,6 +22,15 @@
 ;;running apple script
 
 (require 'dired)
+(require 'subr-x)
+
+(defcustom osx-lib-say-voice nil
+  "Speech voice to use for osx-lib-say.  Nil/empty means default speech voice."
+  :group 'osx-lib)
+
+(defun osx-lib-escape (str)
+  "Escape STR to make it suitable for using is applescripts."
+  (replace-regexp-in-string "\"" "\\\\\"" str))
 
 ;;;###autoload
 (defun osx-lib-run-osascript (script-content)
@@ -47,9 +56,9 @@
   "Create a notification with title as TITLE and message as MESSAGE."
   (osx-lib-run-osascript
    (concat "display notification \""
-	   message
+	   (osx-lib-escape message)
 	   "\" with title  \""
-	   title
+	   (osx-lib-escape title)
 	   "\"")))
 
 ;;;###autoload
@@ -57,11 +66,11 @@
   "Create a notification with title as TITLE, subtitle as SUBTITLE and message as MESSAGE."
   (osx-lib-run-osascript
    (concat "display notification \""
-	   message
+	   (osx-lib-escape message)
 	   "\" with title  \""
-	   title
+	   (osx-lib-escape title)
 	   "\" subtitle \""
-	   subtitle
+	   (osx-lib-escape subtitle)
 	   "\"")))
 
 ;;clipboard functions
@@ -114,7 +123,7 @@ In a dired buffer, it will open the current file."
                     delay 1
                 end repeat
         end tell
-end tell" vpn-name))
+end tell" (osx-lib-escape vpn-name)))
     (osx-lib-copy-to-clipboard password)
     (osx-lib-notify2 "Please paste" "Password has been copied to clipboard")
     (sit-for 5)
@@ -126,8 +135,8 @@ end tell" vpn-name))
   "Disconnect from VPN-NAME vpn."
   (interactive "MEnter the vpn that you want to connect to:")
   (osx-lib-run-osascript
-   (format
-"tell application \"System Events\"
+   (format "
+tell application \"System Events\"
         tell current location of network preferences
                 set VPN to service \"%s\" -- your VPN name here
                 if exists VPN then disconnect VPN
@@ -135,8 +144,26 @@ end tell" vpn-name))
                     delay 1
                 end repeat
         end tell
-end tell" vpn-name))
+end tell"
+	   (osx-lib-escape vpn-name)))
   (osx-lib-notify2 "VPN Disconnected" ""))
+
+;;;###autoload
+(defun osx-lib-say (message)
+  "Speak the MESSAGE."
+  (interactive "MEnter the name message: ")
+  (osx-lib-run-osascript
+   (format "
+tell application \"System Events\"
+	say \"%s\"%s
+end tell
+"
+	   (osx-lib-escape message)
+	   (if (and osx-lib-say-voice (stringp osx-lib-say-voice) (> (length (string-trim osx-lib-say-voice)) 1))
+	       (format " using \"%s\"" osx-lib-say-voice)
+	     ""))))
+
+(defalias 'osx-lib-speak 'osx-lib-say)
 
 (provide 'osx-lib)
 ;;; osx-lib ends here
