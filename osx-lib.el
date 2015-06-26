@@ -3,13 +3,14 @@
 ;; Copyright (C) 2015 OSX Lib authors
 ;;
 ;; Author: Raghav Kumar Gautam <raghav@apache.org>
-;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN
+;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN, Speech
 ;;; Commentary:
 ;; Provides functions for:
 ;;   1. Running Apple Script / osascript
 ;;   2. Play beep
 ;;      (setq ring-bell-function #'osx-lib-do-beep)
 ;;   3. Notification functions
+;;      (osx-lib-notify2 "Emacs" "Text Editor")
 ;;   4. Copying to/from clipboard
 ;;   5. Show the current file in Finder. Works with dired.
 ;;   6. VPN Connect/Disconnect
@@ -17,6 +18,8 @@
 ;;        "Connect to Work VPN."
 ;;        (interactive)
 ;;        (osx-lib-vpn-connect "WorkVPN" "VPN_Password"))
+;;   7. Use speech
+;;      (osx-lib-say "Emacs")
 ;;
 ;;; Code:
 ;;running apple script
