@@ -170,4 +170,4 @@ end tell
 (defalias 'osx-lib-speak 'osx-lib-say)
 
 (provide 'osx-lib)
-;;; osx-lib ends here
+;;; osx-lib.el ends here
