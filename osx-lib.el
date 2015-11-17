@@ -4,6 +4,7 @@
 ;;
 ;; Author: Raghav Kumar Gautam <raghav@apache.org>
 ;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN, Speech
+;; Package-Requires: ((emacs "24.4"))
 ;;; Commentary:
 ;; Provides functions for:
 ;;   1. Running Apple Script / osascript
