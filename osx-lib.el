@@ -169,20 +169,9 @@ end tell
 
 (defalias 'osx-lib-speak 'osx-lib-say)
 
-(defun url-at-point ()
-  (let ((pt (point)))
-    (buffer-substring-no-properties
-     (save-excursion
-       (skip-chars-backward "-a-zA-Z0-9@:/.?&=%_*")
-       (point))
-     (save-excursion
-       (skip-chars-forward "-a-zA-Z0-9@:/.?&=%_*")
-       ;;(skip-chars-backward "." pt)
-       (point)))))
-
 (defun osx-open-url-at-point (url)
   "Open url at point using default browser."
-  (interactive (list (read-from-minibuffer "Please enter the url: " (url-at-point))))
+  (interactive (list (read-from-minibuffer "Please enter the url: " (thing-at-point 'url))))
   (start-process "OsaScript" "*OsaScript*" "open" (eshell-escape-arg url)))
 
 (provide 'osx-lib)
