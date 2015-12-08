@@ -4,6 +4,7 @@
 ;;
 ;; Author: Raghav Kumar Gautam <raghav@apache.org>
 ;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN, Speech
+;; Package-Requires: ((emacs "24.4"))
 ;;; Commentary:
 ;; Provides functions for:
 ;;   1. Running Apple Script / osascript
@@ -185,4 +186,4 @@ end tell
   (start-process "OsaScript" "*OsaScript*" "open" (eshell-escape-arg url)))
 
 (provide 'osx-lib)
-;;; osx-lib ends here
+;;; osx-lib.el ends here
