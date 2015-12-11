@@ -47,6 +47,17 @@
       (insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)"))
     (start-process "OsaScript" "*OsaScript*" "osascript" file)))
 
+(defun osx-lib-run-js (script-content)
+  "Run an SCRIPT-CONTENT as JavaScript."
+  (interactive "sContent of JavaScript AppleScript/osascript:")
+  (let  ((file (make-temp-file "osx-lib-" nil ".js")))
+    (with-temp-file file
+      (insert script-content)
+      ;;delete the script after execution
+      ;;(insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)")
+      )
+    (start-process "OsaScript" "*OsaScript*" "osascript" "-l" "JavaScript" file)))
+
 (defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
 ;;;###autoload
