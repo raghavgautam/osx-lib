@@ -48,6 +48,13 @@
     (start-process "OsaScript" "*OsaScript*" "osascript" file)))
 
 ;;;###autoload
+(defun osx-lib-osx-version ()
+  "Get OS version."
+  (interactive)
+  (string-trim (shell-command-to-string
+		"sw_vers  -productVersion")))
+
+;;;###autoload
 (defun osx-lib-run-js (script-content)
   "Run an SCRIPT-CONTENT as JavaScript."
   (interactive "sContent of JavaScript AppleScript/osascript:")
