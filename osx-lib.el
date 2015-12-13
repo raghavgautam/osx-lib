@@ -47,6 +47,7 @@
       (insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)"))
     (start-process "OsaScript" "*OsaScript*" "osascript" file)))
 
+;;;###autoload
 (defun osx-lib-run-js (script-content)
   "Run an SCRIPT-CONTENT as JavaScript."
   (interactive "sContent of JavaScript AppleScript/osascript:")
