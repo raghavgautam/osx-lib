@@ -45,7 +45,11 @@
       (insert script-content)
       ;;delete the script after execution
       (insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)"))
-    (start-process "OsaScript" "*OsaScript*" "osascript" file)))
+    (osx-lib-run-file file)))
+
+(defun osx-lib-run-file (file)
+  "Run an AppleScript/osascipt FILE."
+  (start-process "OsaScript" "*OsaScript*" "osascript" file))
 
 ;;;###autoload
 (defun osx-lib-osx-version ()
@@ -53,6 +57,10 @@
   (interactive)
   (string-trim (shell-command-to-string
 		"sw_vers  -productVersion")))
+
+(defun osx-lib-run-js-file (file)
+  "Run an AppleScript/osascipt FILE."
+  (start-process "OsaScript" "*OsaScript*" "osascript" "-l" "JavaScript" file))
 
 ;;;###autoload
 (defun osx-lib-run-js (script-content)
@@ -64,7 +72,7 @@
       ;;delete the script after execution
       ;;(insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)")
       )
-    (start-process "OsaScript" "*OsaScript*" "osascript" "-l" "JavaScript" file)))
+    (osx-lib-run-js-file file)))
 
 (defalias 'osx-lib-run-applescript 'osx-lib-run-osascript)
 
