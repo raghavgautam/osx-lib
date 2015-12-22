@@ -144,9 +144,10 @@ In a dired buffer, it will open the current file."
   "Connect to vpn using given VPN-NAME and PASSWORD."
   (interactive "MPlease enter vpn-name:\nMPlease enter vpn password:")
   (let ((old-content (osx-lib-copy-from-clipboard)))
-    (osx-lib-run-osascript
-     (format
-      "tell application \"System Events\"
+    (if (string-lessp (osx-lib-osx-version) "10.10")
+	(osx-lib-run-osascript
+	 (format
+	  "tell application \"System Events\"
         tell current location of network preferences
                 set VPN to service \"%s\" -- your VPN name here
                 if exists VPN then connect VPN
@@ -155,6 +156,7 @@ In a dired buffer, it will open the current file."
                 end repeat
         end tell
 end tell" (osx-lib-escape vpn-name)))
+      (shell-command-to-string (shell-command-to-string (format "scutil --nc start \"%s\"" (shell-quote-argument vpn-name)))))
     (osx-lib-copy-to-clipboard password)
     (osx-lib-notify2 "Please paste" "Password has been copied to clipboard")
     (sit-for 5)
@@ -165,8 +167,9 @@ end tell" (osx-lib-escape vpn-name)))
 (defun osx-lib-vpn-disconnect (vpn-name)
   "Disconnect from VPN-NAME vpn."
   (interactive "MEnter the vpn that you want to connect to:")
-  (osx-lib-run-osascript
-   (format "
+  (if (string-lessp (osx-lib-osx-version) "10.10")
+      (osx-lib-run-osascript
+       (format "
 tell application \"System Events\"
         tell current location of network preferences
                 set VPN to service \"%s\" -- your VPN name here
@@ -176,7 +179,8 @@ tell application \"System Events\"
                 end repeat
         end tell
 end tell"
-	   (osx-lib-escape vpn-name)))
+	       (osx-lib-escape vpn-name)))
+    (shell-command-to-string (shell-command-to-string (format "scutil --nc stop \"%s\"" (shell-quote-argument vpn-name)))))
   (osx-lib-notify2 "VPN Disconnected" ""))
 
 ;;;###autoload
