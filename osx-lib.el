@@ -200,8 +200,9 @@ end tell
 
 (defalias 'osx-lib-speak 'osx-lib-say)
 
+;;;###autoload
 (defun osx-open-url-at-point (url)
-  "Open url at point using default browser."
+  "Open URL at point using default browser."
   (interactive (list (read-from-minibuffer "Please enter the url: " (thing-at-point 'url))))
   (start-process "OsaScript" "*OsaScript*" "open" (eshell-escape-arg url)))
 
