@@ -114,6 +114,11 @@
   "Get clipboard text."
   (shell-command-to-string "pbpaste"))
 
+(defun osx-lib-paste-from-clipboard ()
+  "Paste the clipboard text."
+  (interactive)
+  (insert (osx-lib-copy-from-clipboard)))
+
 ;;function to show file in finder
 ;;;###autoload
 (defun osx-lib-reveal-in-finder-as (file)
@@ -199,7 +204,6 @@ end tell
 	     ""))))
 
 (defalias 'osx-lib-speak 'osx-lib-say)
-(defalias 'osx-lib-copy-from-clipboard 'osx-lib-paste-from-clipboard)
 
 ;;;###autoload
 (defun osx-open-url-at-point (url)
