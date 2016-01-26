@@ -199,6 +199,7 @@ end tell
 	     ""))))
 
 (defalias 'osx-lib-speak 'osx-lib-say)
+(defalias 'osx-lib-copy-from-clipboard 'osx-lib-paste-from-clipboard)
 
 ;;;###autoload
 (defun osx-open-url-at-point (url)
