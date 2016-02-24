@@ -110,14 +110,16 @@
   "Copy the given TEXT to clipboard."
   (shell-command-to-string (concat "pbcopy < <(echo -n " (shell-quote-argument text) ")")))
 
-(defun osx-lib-copy-from-clipboard ()
+
+(defalias 'osx-lib-copy-from-clipboard 'osx-lib-get-from-clipboard)
+(defun osx-lib-get-from-clipboard ()
   "Get clipboard text."
   (shell-command-to-string "pbpaste"))
 
 (defun osx-lib-paste-from-clipboard ()
   "Paste the clipboard text."
   (interactive)
-  (insert (osx-lib-copy-from-clipboard)))
+  (insert (osx-lib-get-from-clipboard)))
 
 ;;function to show file in finder
 ;;;###autoload
