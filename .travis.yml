@@ -1,8 +1,25 @@
 language: emacs-lisp
 
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq emacs
+env:
+  - EMACS=emacs-24.5-bin METHOD=evm
 
-script: emacs -batch -f batch-byte-compile *.el
-
+install:
+  - if [ "$METHOD" = 'evm' ]; then
+      sudo mkdir /usr/local/evm &&
+      sudo chown travis:travis /usr/local/evm &&
+      sudo add-apt-repository -y ppa:cassou/emacs &&
+      sudo apt-get update -qq &&
+      sudo apt-get build-dep -qq emacs23 &&
+      sudo apt-get build-dep -qq emacs24 &&
+      curl -fsSkL https://raw.github.com/rejeep/evm/master/go | bash &&
+      export PATH="~/.evm/bin:$PATH" &&
+      chmod +x ~/.evm/bin/evm &&
+      ~/.evm/bin/evm install $EMACS &&
+      ~/.evm/bin/evm use $EMACS &&
+      FULL_EMACS_PATH="/usr/local/evm/$EMACS/bin/emacs" &&
+      export EMACS="$FULL_EMACS_PATH" &&
+      EMACS="$FULL_EMACS_PATH";
+    fi
+  
+script:
+  echo "Method = $METHOD EMACS=$EMACS" && emacs --version && emacs -batch -f batch-byte-compile *.el
