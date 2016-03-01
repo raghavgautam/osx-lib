@@ -21,6 +21,8 @@
 ;;        (osx-lib-vpn-connect "WorkVPN" "VPN_Password"))
 ;;   7. Use speech
 ;;      (osx-lib-say "Emacs")
+;;   8. Use mdfind(commandline equivalent of Spotlight) for locate
+;;      (setq locate-make-command-line #'osx-locate-make-command-line)
 ;;
 ;;; Code:
 ;;running apple script
@@ -212,6 +214,10 @@ end tell
   "Open URL at point using default browser."
   (interactive (list (read-from-minibuffer "Please enter the url: " (thing-at-point 'url))))
   (start-process "OsaScript" "*OsaScript*" "open" (eshell-escape-arg url)))
+
+;;use mdfind instead of locate (setq locate-make-command-line #'osx-locate-make-command-line)
+(defun osx-locate-make-command-line (search-string)
+  (list "mdfind" "-name" (shell-quote-argument search-string)))
 
 (provide 'osx-lib)
 ;;; osx-lib.el ends here
