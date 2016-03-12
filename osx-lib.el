@@ -14,14 +14,17 @@
 ;;      (osx-lib-notify2 "Emacs" "Text Editor")
 ;;   4. Copying to/from clipboard
 ;;   5. Show the current file in Finder. Works with dired.
-;;   6. VPN Connect/Disconnect
+;;   6. Get/Set Sound volume
+;;      (osx-lib-set-volume 25)
+;;      (osx-lib-get-volume)
+;;   7. VPN Connect/Disconnect
 ;;      (defun work-vpn-connect ()
 ;;        "Connect to Work VPN."
 ;;        (interactive)
 ;;        (osx-lib-vpn-connect "WorkVPN" "VPN_Password"))
-;;   7. Use speech
+;;   8. Use speech
 ;;      (osx-lib-say "Emacs")
-;;   8. Use mdfind(commandline equivalent of Spotlight) for locate
+;;   9. Use mdfind(commandline equivalent of Spotlight) for locate
 ;;      (setq locate-make-command-line #'osx-locate-make-command-line)
 ;;
 ;;; Code:
@@ -218,6 +221,20 @@ end tell
 ;;use mdfind instead of locate (setq locate-make-command-line #'osx-locate-make-command-line)
 (defun osx-locate-make-command-line (search-string)
   (list "mdfind" "-name" (shell-quote-argument search-string)))
+
+;;;###autoload
+(defun osx-lib-set-volume (vol)
+  "Set sound output volume to VOL(0-100)."
+  (interactive "nEnter volume (0-100): ")
+  (osx-lib-run-osascript
+   (format "set volume output volume %d" vol)))
+
+;;;###autoload
+(defun osx-lib-get-volume ()
+  "Get sound output volume (0-100)."
+  (string-to-number
+   (shell-command-to-string
+    "osascript -e 'output volume of (get volume settings)'")))
 
 (provide 'osx-lib)
 ;;; osx-lib.el ends here
