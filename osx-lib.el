@@ -17,14 +17,17 @@
 ;;   6. Get/Set Sound volume
 ;;      (osx-lib-set-volume 25)
 ;;      (osx-lib-get-volume)
-;;   7. VPN Connect/Disconnect
+;;   6. Mute/unmute Sound volume
+;;      (osx-lib-mute-volume)
+;;      (osx-lib-unmute-volume)
+;;   8. VPN Connect/Disconnect
 ;;      (defun work-vpn-connect ()
 ;;        "Connect to Work VPN."
 ;;        (interactive)
 ;;        (osx-lib-vpn-connect "WorkVPN" "VPN_Password"))
-;;   8. Use speech
+;;   9. Use speech
 ;;      (osx-lib-say "Emacs")
-;;   9. Use mdfind(commandline equivalent of Spotlight) for locate
+;;   10.Use mdfind(commandline equivalent of Spotlight) for locate
 ;;      (setq locate-make-command-line #'osx-locate-make-command-line)
 ;;
 ;;; Code:
@@ -235,6 +238,18 @@ end tell
   (string-to-number
    (shell-command-to-string
     "osascript -e 'output volume of (get volume settings)'")))
+
+(defun osx-lib-mute-volume ()
+  "Mute sound volume."
+  (interactive)
+  (shell-command-to-string
+   "osascript -e 'set volume output muted true'"))
+
+(defun osx-lib-unmute-volume ()
+  "Unmute sound volume."
+  (interactive)
+  (shell-command-to-string
+   "osascript -e 'set volume output muted false'"))
 
 (provide 'osx-lib)
 ;;; osx-lib.el ends here
