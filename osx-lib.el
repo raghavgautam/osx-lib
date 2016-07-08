@@ -252,10 +252,13 @@ end tell
    "osascript -e 'set volume output muted false'"))
 
 ;;;###autoload
-(defun osx-lib-start-terminal (&optional dir) 
+(defun osx-lib-start-terminal (&optional dir cmd-with-quoted-args)
   "Start terminal in DIR."
   (interactive)
-  (osx-lib-run-applescript (concat "tell application \"Terminal\" to activate do script \"cd " (or dir default-directory) "\"")))
+  (let ((cd-cmd (concat "cd " (shell-quote-argument (or dir default-directory))
+			(when cmd-with-quoted-args
+			  (concat ";" cmd-with-quoted-args)))))
+    (osx-lib-run-applescript (concat "tell application \"Terminal\" to activate do script \"" cd-cmd "\""))))
 
 (provide 'osx-lib)
 ;;; osx-lib.el ends here
