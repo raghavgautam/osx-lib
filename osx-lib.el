@@ -40,6 +40,10 @@
   "Speech voice to use for osx-lib-say.  Nil/empty means default speech voice."
   :group 'osx-lib)
 
+(defcustom osx-lib-debug-level nil
+  "Debug level for osx-lib. Highier value implies more information."
+  :group 'osx-lib)
+
 (defun osx-lib-escape (str)
   "Escape STR to make it suitable for using is applescripts."
   (replace-regexp-in-string "\"" "\\\\\"" str))
@@ -52,11 +56,15 @@
     (with-temp-file file
       (insert script-content)
       ;;delete the script after execution
-      (insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)"))
+      (unless osx-lib-debug-level
+        (insert "\ndo shell script \"rm -rf \" & the quoted form of POSIX path of (path to me)")))
     (osx-lib-run-file file)))
 
 (defun osx-lib-run-file (file)
   "Run an AppleScript/osascipt FILE."
+  (when osx-lib-debug-level
+    (with-current-buffer "*OsaScript*"
+      (insert "Going to run file: " file)))
   (start-process "OsaScript" "*OsaScript*" "osascript" file))
 
 ;;;###autoload
