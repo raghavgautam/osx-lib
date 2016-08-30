@@ -269,5 +269,11 @@ end tell
                           (concat ";" cmd-with-quoted-args)))))
     (osx-lib-run-applescript (concat "tell application \"Terminal\" to activate do script \"" cd-cmd "\""))))
 
+(defun osx-lib-say-region (start end)
+  "Send current region to osx speaker."
+  (interactive "r")
+  (let ((selection (buffer-substring-no-properties start end)))
+		(osx-lib-say selection)))
+
 (provide 'osx-lib)
 ;;; osx-lib.el ends here
