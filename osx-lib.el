@@ -264,7 +264,7 @@ end tell
   "Start terminal in DIR."
   (interactive)
   (let ((cd-cmd (concat "cd "
-                        (shell-quote-argument (or dir default-directory))
+                        (shell-quote-argument (expand-file-name (or dir default-directory)))
                         (when cmd-with-quoted-args
                           (concat ";" cmd-with-quoted-args)))))
     (osx-lib-run-applescript (concat "tell application \"Terminal\" to activate do script \"" cd-cmd "\""))))
