@@ -40,7 +40,7 @@
   "Speech voice to use for osx-lib-say.  Nil/empty means default speech voice."
   :group 'osx-lib)
 
-(defcustom osx-lib-say-ratio nil
+(defcustom osx-lib-say-rate nil
   "Speech rate to be used, in words per minute. Average human speech occurs at a rate of 180 to 220 words per minute. Default depends on the voice used."
   :group 'osx-lib)
 
@@ -221,8 +221,8 @@ tell application \"System Events\"
 end tell
 "
 	   (osx-lib-escape message)
-	   (if (and osx-lib-say-ratio (numberp osx-lib-say-ratio))
-	       (format " speaking rate %d" osx-lib-say-ratio)
+	   (if (and osx-lib-say-rate (numberp osx-lib-say-rate))
+	       (format " speaking rate %d" osx-lib-say-rate)
 	     "")
 	   (if (and osx-lib-say-voice (stringp osx-lib-say-voice) (> (length (string-trim osx-lib-say-voice)) 1))
 	       (format " using \"%s\"" osx-lib-say-voice)
