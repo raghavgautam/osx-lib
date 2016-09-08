@@ -34,6 +34,7 @@
 ;;running apple script
 
 (require 'dired)
+(require 'eshell)
 (require 'subr-x)
 
 (defcustom osx-lib-say-voice nil
