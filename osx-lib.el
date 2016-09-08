@@ -34,7 +34,6 @@
 ;;running apple script
 
 (require 'dired)
-(require 'eshell)
 (require 'subr-x)
 
 (defcustom osx-lib-say-voice nil
@@ -228,7 +227,7 @@ end tell
 (defun osx-open-url-at-point (url)
   "Open URL at point using default browser."
   (interactive (list (read-from-minibuffer "Please enter the url: " (thing-at-point 'url))))
-  (start-process "OsaScript" "*OsaScript*" "open" (eshell-escape-arg url)))
+  (start-process "OsaScript" "*OsaScript*" "open" (shell-quote-argument url)))
 
 ;;use mdfind instead of locate (setq locate-make-command-line #'osx-locate-make-command-line)
 (defun osx-locate-make-command-line (search-string)
