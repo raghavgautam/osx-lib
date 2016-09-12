@@ -13,7 +13,7 @@
 ;;   3. Notification functions
 ;;      (osx-lib-notify2 "Emacs" "Text Editor")
 ;;   4. Copying to/from clipboard
-;;   5. Show the current file in Finder. Works with dired.
+;;   5. Show the current file in Finder.  Works with dired.
 ;;   6. Get/Set Sound volume
 ;;      (osx-lib-set-volume 25)
 ;;      (osx-lib-get-volume)
@@ -34,6 +34,7 @@
 ;;running apple script
 
 (require 'dired)
+(require 'eshell)
 (require 'subr-x)
 
 (defcustom osx-lib-say-voice nil
@@ -45,7 +46,7 @@
   :group 'osx-lib)
 
 (defcustom osx-lib-debug-level nil
-  "Debug level for osx-lib. Highier value implies more information."
+  "Debug level for osx-lib.  Highier value implies more information."
   :group 'osx-lib)
 
 (defun osx-lib-escape (str)
