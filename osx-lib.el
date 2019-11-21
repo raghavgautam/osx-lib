@@ -3,6 +3,7 @@
 ;; Copyright (C) 2015 OSX Lib authors
 ;;
 ;; Author: Raghav Kumar Gautam <raghav@apache.org>
+;; URL: https://github.com/raghavgautam/osx-lib
 ;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN, Speech
 ;; Package-Requires: ((emacs "24.4"))
 ;;; Commentary:
