@@ -1,4 +1,4 @@
-;;; osx-lib.el --- Basic function for Apple/OSX.
+;;; osx-lib.el --- Basic functions for Apple/OSX
 ;;
 ;; Copyright (C) 2015 OSX Lib authors
 ;;
@@ -6,6 +6,7 @@
 ;; URL: https://github.com/raghavgautam/osx-lib
 ;; Keywords: Apple, AppleScript, OSX, Finder, Emacs, Elisp, VPN, Speech
 ;; Package-Requires: ((emacs "24.4"))
+;; Package-Version: 0.1
 ;;; Commentary:
 ;; Provides functions for:
 ;;   1. Running Apple Script / osascript
@@ -236,13 +237,13 @@ end tell
 (defalias 'osx-lib-speak 'osx-lib-say)
 
 ;;;###autoload
-(defun osx-open-url-at-point (url)
+(defun osx-lib-open-url-at-point (url)
   "Open URL at point using default browser."
   (interactive (list (read-from-minibuffer "Please enter the url: " (thing-at-point 'url))))
   (start-process "OsaScript" "*OsaScript*" "open" (eshell-escape-arg url)))
 
 ;;use mdfind instead of locate (setq locate-make-command-line #'osx-locate-make-command-line)
-(defun osx-locate-make-command-line (search-string)
+(defun osx-lib-locate-make-command-line (search-string)
   (list "mdfind" "-name" (shell-quote-argument search-string)))
 
 ;;;###autoload
@@ -286,6 +287,20 @@ end tell
   (interactive "r")
   (let ((selection (buffer-substring-no-properties start end)))
 		(osx-lib-say selection)))
+
+;;;###autoload
+(defun osx-lib-network-quality ()
+  "Test the network's quality using the built-in NQ tool."
+  (interactive)
+  (get-buffer-create "*network quality*")
+  (switch-to-buffer "*network quality*")
+  (let (buffer-read-only)
+	(erase-buffer)
+	(message "Running network quality tests...")
+	(center-line)
+	(insert "\n")
+	(insert (shell-command-to-string "networkQuality -s"))
+	(message "Tests completed.")))
 
 (provide 'osx-lib)
 ;;; osx-lib.el ends here
